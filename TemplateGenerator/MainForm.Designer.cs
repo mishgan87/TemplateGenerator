@@ -30,11 +30,12 @@
         {
             this.treeView = new System.Windows.Forms.TreeView();
             this.menu = new System.Windows.Forms.ToolStrip();
-            this.buttonOpenTemplate = new System.Windows.Forms.ToolStripButton();
-            this.buttonGenerate = new System.Windows.Forms.ToolStripButton();
-            this.buttonSaveTemplate = new System.Windows.Forms.ToolStripButton();
-            this.buttonNewTemplate = new System.Windows.Forms.ToolStripButton();
             this.layout = new System.Windows.Forms.SplitContainer();
+            this.buttonNewTemplate = new System.Windows.Forms.ToolStripButton();
+            this.buttonOpenTemplate = new System.Windows.Forms.ToolStripButton();
+            this.buttonSaveTemplate = new System.Windows.Forms.ToolStripButton();
+            this.buttonGenerate = new System.Windows.Forms.ToolStripButton();
+            this.buttonImport = new System.Windows.Forms.ToolStripButton();
             this.menu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layout)).BeginInit();
             this.layout.Panel1.SuspendLayout();
@@ -51,64 +52,24 @@
             this.treeView.Size = new System.Drawing.Size(800, 386);
             this.treeView.TabIndex = 0;
             this.treeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.TreeView_MouseClick);
+            this.treeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.TreeView_NodeMouseDoubleClick);
             // 
             // menu
             // 
             this.menu.Dock = System.Windows.Forms.DockStyle.Fill;
             this.menu.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.buttonNewTemplate,
             this.buttonOpenTemplate,
-            this.buttonGenerate,
             this.buttonSaveTemplate,
-            this.buttonNewTemplate});
+            this.buttonGenerate,
+            this.buttonImport});
             this.menu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.menu.Location = new System.Drawing.Point(0, 0);
             this.menu.Name = "menu";
             this.menu.Size = new System.Drawing.Size(800, 60);
             this.menu.TabIndex = 1;
             this.menu.Text = "toolStrip1";
-            // 
-            // buttonOpenTemplate
-            // 
-            this.buttonOpenTemplate.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.buttonOpenTemplate.Image = global::TemplateGenerator.Properties.Resources.open;
-            this.buttonOpenTemplate.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.buttonOpenTemplate.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.buttonOpenTemplate.Name = "buttonOpenTemplate";
-            this.buttonOpenTemplate.Size = new System.Drawing.Size(36, 57);
-            this.buttonOpenTemplate.ToolTipText = "Open";
-            // 
-            // buttonGenerate
-            // 
-            this.buttonGenerate.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.buttonGenerate.Image = global::TemplateGenerator.Properties.Resources.excel;
-            this.buttonGenerate.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.buttonGenerate.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.buttonGenerate.Name = "buttonGenerate";
-            this.buttonGenerate.Size = new System.Drawing.Size(36, 57);
-            this.buttonGenerate.ToolTipText = "Export";
-            this.buttonGenerate.Click += new System.EventHandler(this.ButtonGenerate_Click);
-            // 
-            // buttonSaveTemplate
-            // 
-            this.buttonSaveTemplate.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.buttonSaveTemplate.Image = global::TemplateGenerator.Properties.Resources.save;
-            this.buttonSaveTemplate.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.buttonSaveTemplate.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.buttonSaveTemplate.Name = "buttonSaveTemplate";
-            this.buttonSaveTemplate.Size = new System.Drawing.Size(36, 57);
-            this.buttonSaveTemplate.ToolTipText = "Save";
-            // 
-            // buttonNewTemplate
-            // 
-            this.buttonNewTemplate.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.buttonNewTemplate.Image = global::TemplateGenerator.Properties.Resources._new;
-            this.buttonNewTemplate.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.buttonNewTemplate.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.buttonNewTemplate.Name = "buttonNewTemplate";
-            this.buttonNewTemplate.Size = new System.Drawing.Size(36, 57);
-            this.buttonNewTemplate.ToolTipText = "Create";
-            this.buttonNewTemplate.Click += new System.EventHandler(this.NewTemplate);
             // 
             // layout
             // 
@@ -128,6 +89,59 @@
             this.layout.Size = new System.Drawing.Size(800, 450);
             this.layout.SplitterDistance = 60;
             this.layout.TabIndex = 2;
+            // 
+            // buttonNewTemplate
+            // 
+            this.buttonNewTemplate.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.buttonNewTemplate.Image = global::TemplateGenerator.Properties.Resources._new;
+            this.buttonNewTemplate.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.buttonNewTemplate.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonNewTemplate.Name = "buttonNewTemplate";
+            this.buttonNewTemplate.Size = new System.Drawing.Size(36, 57);
+            this.buttonNewTemplate.ToolTipText = "Create";
+            this.buttonNewTemplate.Click += new System.EventHandler(this.NewTemplate);
+            // 
+            // buttonOpenTemplate
+            // 
+            this.buttonOpenTemplate.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.buttonOpenTemplate.Image = global::TemplateGenerator.Properties.Resources.open;
+            this.buttonOpenTemplate.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.buttonOpenTemplate.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonOpenTemplate.Name = "buttonOpenTemplate";
+            this.buttonOpenTemplate.Size = new System.Drawing.Size(36, 57);
+            this.buttonOpenTemplate.ToolTipText = "Open";
+            // 
+            // buttonSaveTemplate
+            // 
+            this.buttonSaveTemplate.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.buttonSaveTemplate.Image = global::TemplateGenerator.Properties.Resources.save;
+            this.buttonSaveTemplate.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.buttonSaveTemplate.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonSaveTemplate.Name = "buttonSaveTemplate";
+            this.buttonSaveTemplate.Size = new System.Drawing.Size(36, 57);
+            this.buttonSaveTemplate.ToolTipText = "Save";
+            // 
+            // buttonGenerate
+            // 
+            this.buttonGenerate.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.buttonGenerate.Image = global::TemplateGenerator.Properties.Resources.excel;
+            this.buttonGenerate.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.buttonGenerate.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonGenerate.Name = "buttonGenerate";
+            this.buttonGenerate.Size = new System.Drawing.Size(36, 57);
+            this.buttonGenerate.ToolTipText = "Export";
+            this.buttonGenerate.Click += new System.EventHandler(this.ButtonGenerate_Click);
+            // 
+            // buttonImport
+            // 
+            this.buttonImport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.buttonImport.Image = global::TemplateGenerator.Properties.Resources.word;
+            this.buttonImport.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.buttonImport.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonImport.Name = "buttonImport";
+            this.buttonImport.Size = new System.Drawing.Size(36, 57);
+            this.buttonImport.ToolTipText = "Import";
+            this.buttonImport.Click += new System.EventHandler(this.ButtonImport_Click);
             // 
             // MainForm
             // 
@@ -157,6 +171,7 @@
         private System.Windows.Forms.ToolStripButton buttonSaveTemplate;
         private System.Windows.Forms.SplitContainer layout;
         private System.Windows.Forms.ToolStripButton buttonGenerate;
+        private System.Windows.Forms.ToolStripButton buttonImport;
     }
 }
 
