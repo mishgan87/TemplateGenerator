@@ -57,20 +57,12 @@ namespace TemplateGenerator
             // Create a spreadsheet document by using the file name
             using (SpreadsheetDocument document = SpreadsheetDocument.Create(fileName, SpreadsheetDocumentType.Workbook))
             {
-                // Add a WorkbookPart and Workbook objects
+
                 WorkbookPart workbookpart = document.AddWorkbookPart();
-                workbookpart.Workbook = new Workbook();
-
-                // Add a WorksheetPart
                 WorksheetPart worksheetPart = workbookpart.AddNewPart<WorksheetPart>();
-
-                // Create Worksheet and SheetData objects
+                workbookpart.Workbook = new Workbook();
                 worksheetPart.Worksheet = new Worksheet(new SheetData());
-
-                // Add a Sheets object
                 Sheets sheets = document.WorkbookPart.Workbook.AppendChild<Sheets>(new Sheets());
-
-                // Append the new worksheet named "Permissible Grid" and associate it with the workbook
                 Sheet sheet = new Sheet()
                 {
                     Id = document.WorkbookPart.GetIdOfPart(worksheetPart),
@@ -79,12 +71,11 @@ namespace TemplateGenerator
                 };
                 sheets.Append(sheet);
 
-                // Append stylesheets
                 WorkbookStylesPart wbsp = workbookpart.AddNewPart<WorkbookStylesPart>();
                 wbsp.Stylesheet = GenerateStyleSheet();
                 wbsp.Stylesheet.Save();
 
-                SheetData sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>(); // Get the sheetData cell table
+                SheetData sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
 
                 TreeNodeCollection nodes = treeView.Nodes[0].Nodes;
 
@@ -260,19 +251,19 @@ namespace TemplateGenerator
 
                     // 1 - Left alignment
                     new CellFormat(
-                        new Alignment() { Horizontal = HorizontalAlignmentValues.Left, Vertical = VerticalAlignmentValues.Center }
+                        new Alignment() { Horizontal = HorizontalAlignmentValues.Left, Vertical = VerticalAlignmentValues.Center, WrapText = true }
                     )
                     { FontId = 0, FillId = 0, BorderId = 1, ApplyAlignment = true, ApplyFill = true, ApplyFont = true },
 
                     // 2 - Center alignment
                     new CellFormat(
-                        new Alignment() { Horizontal = HorizontalAlignmentValues.Center, Vertical = VerticalAlignmentValues.Center }
+                        new Alignment() { Horizontal = HorizontalAlignmentValues.Center, Vertical = VerticalAlignmentValues.Center, WrapText = true }
                     )
                     { FontId = 0, FillId = 0, BorderId = 1, ApplyAlignment = true, ApplyFill = true, ApplyFont = true },
 
                     // 3 - Vertival Center alignment
                     new CellFormat(
-                        new Alignment() { Horizontal = HorizontalAlignmentValues.Center, Vertical = VerticalAlignmentValues.Center, TextRotation = 90 }
+                        new Alignment() { Horizontal = HorizontalAlignmentValues.Center, Vertical = VerticalAlignmentValues.Center, TextRotation = 90, WrapText = true }
                     )
                     { FontId = 0, FillId = 0, BorderId = 1, ApplyAlignment = true, ApplyFill = true, ApplyFont = true }
 

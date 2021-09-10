@@ -30,26 +30,28 @@
         {
             this.treeView = new System.Windows.Forms.TreeView();
             this.menu = new System.Windows.Forms.ToolStrip();
-            this.layout = new System.Windows.Forms.SplitContainer();
             this.buttonNewTemplate = new System.Windows.Forms.ToolStripButton();
             this.buttonOpenTemplate = new System.Windows.Forms.ToolStripButton();
             this.buttonSaveTemplate = new System.Windows.Forms.ToolStripButton();
             this.buttonGenerate = new System.Windows.Forms.ToolStripButton();
             this.buttonImport = new System.Windows.Forms.ToolStripButton();
+            this.layout = new System.Windows.Forms.SplitContainer();
+            this.gridView = new System.Windows.Forms.DataGridView();
             this.menu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layout)).BeginInit();
             this.layout.Panel1.SuspendLayout();
             this.layout.Panel2.SuspendLayout();
             this.layout.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView)).BeginInit();
             this.SuspendLayout();
             // 
             // treeView
             // 
-            this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView.Dock = System.Windows.Forms.DockStyle.Left;
             this.treeView.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.treeView.Location = new System.Drawing.Point(0, 0);
             this.treeView.Name = "treeView";
-            this.treeView.Size = new System.Drawing.Size(800, 386);
+            this.treeView.Size = new System.Drawing.Size(396, 386);
             this.treeView.TabIndex = 0;
             this.treeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.TreeView_MouseClick);
             this.treeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.TreeView_NodeMouseDoubleClick);
@@ -70,25 +72,6 @@
             this.menu.Size = new System.Drawing.Size(800, 60);
             this.menu.TabIndex = 1;
             this.menu.Text = "toolStrip1";
-            // 
-            // layout
-            // 
-            this.layout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layout.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.layout.Location = new System.Drawing.Point(0, 0);
-            this.layout.Name = "layout";
-            this.layout.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // layout.Panel1
-            // 
-            this.layout.Panel1.Controls.Add(this.menu);
-            // 
-            // layout.Panel2
-            // 
-            this.layout.Panel2.Controls.Add(this.treeView);
-            this.layout.Size = new System.Drawing.Size(800, 450);
-            this.layout.SplitterDistance = 60;
-            this.layout.TabIndex = 2;
             // 
             // buttonNewTemplate
             // 
@@ -143,6 +126,37 @@
             this.buttonImport.ToolTipText = "Import";
             this.buttonImport.Click += new System.EventHandler(this.ButtonImport_Click);
             // 
+            // layout
+            // 
+            this.layout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.layout.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.layout.Location = new System.Drawing.Point(0, 0);
+            this.layout.Name = "layout";
+            this.layout.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // layout.Panel1
+            // 
+            this.layout.Panel1.Controls.Add(this.menu);
+            // 
+            // layout.Panel2
+            // 
+            this.layout.Panel2.Controls.Add(this.gridView);
+            this.layout.Panel2.Controls.Add(this.treeView);
+            this.layout.Size = new System.Drawing.Size(800, 450);
+            this.layout.SplitterDistance = 60;
+            this.layout.TabIndex = 2;
+            // 
+            // gridView
+            // 
+            this.gridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gridView.Location = new System.Drawing.Point(405, 0);
+            this.gridView.Name = "gridView";
+            this.gridView.Size = new System.Drawing.Size(395, 386);
+            this.gridView.TabIndex = 1;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -158,6 +172,7 @@
             this.layout.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layout)).EndInit();
             this.layout.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gridView)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -172,6 +187,7 @@
         private System.Windows.Forms.SplitContainer layout;
         private System.Windows.Forms.ToolStripButton buttonGenerate;
         private System.Windows.Forms.ToolStripButton buttonImport;
+        private System.Windows.Forms.DataGridView gridView;
     }
 }
 
