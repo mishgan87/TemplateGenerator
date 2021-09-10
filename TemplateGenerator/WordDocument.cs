@@ -89,6 +89,12 @@ namespace TemplateGenerator
                 treeView.Nodes.Add(rootNode);
 
                 gridView.DataSource = grid;
+
+                string xfilename = filename;
+                xfilename = xfilename.Remove(xfilename.LastIndexOf("."), xfilename.Length - xfilename.LastIndexOf("."));
+                xfilename += ".xlsx";
+
+                ExcelDocument.ImportDataTable(grid, xfilename);
             }
         }
     }

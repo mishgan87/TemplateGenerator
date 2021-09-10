@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,10 +52,75 @@ namespace TemplateGenerator
 
             return newCell;
         }
+        public static void ImportDataTable(DataTable table, string filename)
+        {
+            using (SpreadsheetDocument document = SpreadsheetDocument.Create(filename, SpreadsheetDocumentType.Workbook))
+            {
+
+                WorkbookPart workbookpart = document.AddWorkbookPart();
+                WorksheetPart worksheetPart = workbookpart.AddNewPart<WorksheetPart>();
+                workbookpart.Workbook = new Workbook();
+                worksheetPart.Worksheet = new Worksheet(new SheetData());
+                Sheets sheets = document.WorkbookPart.Workbook.AppendChild<Sheets>(new Sheets());
+                Sheet sheet = new Sheet()
+                {
+                    Id = document.WorkbookPart.GetIdOfPart(worksheetPart),
+                    SheetId = 1,
+                    Name = $"Sheet1"
+                };
+                sheets.Append(sheet);
+
+                WorkbookStylesPart wbsp = workbookpart.AddNewPart<WorkbookStylesPart>();
+                wbsp.Stylesheet = GenerateStyleSheet();
+                wbsp.Stylesheet.Save();
+
+                SheetData sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
+
+                Columns lstColumns = worksheetPart.Worksheet.GetFirstChild<Columns>();
+                if (lstColumns == null)
+                {
+                    lstColumns = new Columns();
+                }
+
+                for (int col = 0; col < table.Columns.Count; col++)
+                {
+                    lstColumns.Append(new Column() { Min = 1, Max = 15, Width = 15, CustomWidth = true, BestFit = true });
+                }
+                worksheetPart.Worksheet.InsertAt(lstColumns, 0);
+
+                // string mergeRange = "";
+                // MergeCells mergeCells = new MergeCells(); // Массив объединённых ячеек
+                Cell cell = null;
+
+                uint rowIndex = 1;
+                foreach(object tableRow in table.Rows)
+                {
+                    Row row = new Row { RowIndex = rowIndex, Height = 21.25, CustomHeight = true };
+                    sheetData.Append(row);
+                    DataRow drow = (DataRow)tableRow;
+                    int col = 0;
+                    foreach(object rowCell in drow.ItemArray)
+                    {
+                        // cell = AddCell(row, 0, (string)rowCell, 1);
+                        cell = AddCell(row, col, rowCell.ToString(), 1);
+                        col++;
+                    }
+                    
+                    rowIndex++;
+                }
+
+                // worksheetPart.Worksheet.InsertAfter(mergeCells, worksheetPart.Worksheet.Elements<SheetData>().First()); // Добавляем к документу список объединённых ячеек
+                // worksheetPart.Worksheet.Save();
+                workbookpart.Workbook.Save();
+                document.Close();
+            }
+
+            MessageBox.Show("Done");
+        }
         public static void ImportTreeView(TreeView treeView)
         {
             string fileName = $"{treeView.Nodes[0].Text}.xlsx";
-            // Create a spreadsheet document by using the file name
+
             using (SpreadsheetDocument document = SpreadsheetDocument.Create(fileName, SpreadsheetDocumentType.Workbook))
             {
 
