@@ -108,14 +108,29 @@ namespace TemplateGenerator
                     foreach (object dataRowCell in dataRow.ItemArray)
                     {
                         string text = dataRowCell.ToString();
-                        cell = AddCell(row, col, text, 1);
+                        uint styleIndex = 1;
+
+                        bool horizontalMerge = text.Contains("[HM]");
+                        bool verticalMerge = text.Contains("[VM]");
+
+                        if (text.Contains("btLr"))
+                        {
+                            styleIndex = 3;
+                        }
+
+                        if (text.Contains("]"))
+                        {
+                            text = text.Remove(0, text.LastIndexOf("]") + 1);
+                        }
+
+                        cell = AddCell(row, col, text, styleIndex);
 
                         if (col == verticalMergeColumn && isVerticalMergeStarted)
                         {
                             cells.Add(cell);
                         }
 
-                        if (text.Contains("[HM]"))
+                        if (horizontalMerge)
                         {
                             if (!isHorizontalMergeStarted)
                             {
@@ -129,6 +144,19 @@ namespace TemplateGenerator
                                 mergeCells.Append(new MergeCell() { Reference = new StringValue($"{cells.First().CellReference.Value}:{cells.Last().CellReference.Value}") });
                                 cells.Clear();
                             }
+
+                            if (isVerticalMergeStarted)
+                            {
+                                cells.Remove(cells.Last());
+                                verticalMergeColumn = -1;
+                                isVerticalMergeStarted = false;
+                                mergeCells.Append(new MergeCell() { Reference = new StringValue($"{cells.First().CellReference.Value}:{cells.Last().CellReference.Value}") });
+                                cells.Clear();
+
+                                // cells.Add(cell);
+                                // isVerticalMergeStarted = true;
+                                // verticalMergeColumn = col;
+                            }
                         }
 
                         if (col == dataRow.ItemArray.Count() && isHorizontalMergeStarted)
@@ -139,7 +167,7 @@ namespace TemplateGenerator
                             cells.Clear();
                         }
 
-                        if (text.Contains("[VM]"))
+                        if (verticalMerge)
                         {
                             if (!isVerticalMergeStarted)
                             {

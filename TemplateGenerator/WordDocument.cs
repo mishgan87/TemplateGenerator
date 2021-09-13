@@ -18,10 +18,8 @@ namespace TemplateGenerator
         {
 
         }
-        public static void ImportExportToTreeView(string filename, TreeView treeView, DataGridView gridView)
+        public static void ToGridView(string filename, DataGridView gridView)
         {
-            treeView.Nodes.Clear();
-
             using (WordprocessingDocument doc = WordprocessingDocument.Open(filename, true))
             {
                 List<Table> tables = new List<Table>();
@@ -30,69 +28,63 @@ namespace TemplateGenerator
                     tables.Add(tbl);
                 }
 
-                Table table = tables[0];
-
                 DataTable grid = new DataTable();
 
                 int index = 1;
-                TreeNode rootNode = new TreeNode("Root");
-                foreach (TableRow row in table.Elements<TableRow>())
+
+                foreach (Table table in tables)
                 {
-                    int col = 1;
-                    DataRow drow = grid.NewRow();
-
-                    TreeNode groupNode = new TreeNode($"Row {index}");
-                    TreeNode attributeNode = new TreeNode($"Row {index}");
-
-                    foreach (TableCell cell in row.Elements<TableCell>())
+                    foreach (TableRow row in table.Elements<TableRow>())
                     {
-                        string text = $"{cell.InnerText}";
+                        int col = 1;
+                        DataRow drow = grid.NewRow();
 
-                        var properties = cell.TableCellProperties;
-                        var direction = properties.TextDirection;
-                        string textDirection = "[]";
-                        if (direction != null)
+                        foreach (TableCell cell in row.Elements<TableCell>())
                         {
-                            textDirection = $"[{direction.Val.ToString()}]";
-                        }
-                        
-                        if (properties.HorizontalMerge != null)
-                        {
-                            if (properties.HorizontalMerge.Val != null)
+                            string text = $"{cell.InnerText}";
+
+                            var properties = cell.TableCellProperties;
+                            var direction = properties.TextDirection;
+                            string textDirection = "[]";
+                            if (direction != null)
                             {
-                                text = $"[HM][{textDirection}] {text}"; // text = $"[HM.{properties.HorizontalMerge.Val.Value}] {text}";
+                                textDirection = $"[{direction.Val.InnerText}]";
                             }
-                        }
 
-                        if (properties.VerticalMerge != null)
-                        {
-                            if (properties.VerticalMerge.Val != null)
+                            if (properties.HorizontalMerge != null)
                             {
-                                text = $"[VM]{textDirection} {text}"; // text = $"[VM].{properties.VerticalMerge.Val.Value}] {text}";
+                                if (properties.HorizontalMerge.Val != null)
+                                {
+                                    text = $"[HM][{textDirection}] {text}";
+                                }
                             }
+
+                            if (properties.VerticalMerge != null)
+                            {
+                                if (properties.VerticalMerge.Val != null)
+                                {
+                                    text = $"[VM]{textDirection} {text}";
+                                }
+                            }
+
+                            if (grid.Columns.Count < col)
+                            {
+                                grid.Columns.Add($"{col}");
+                            }
+                            drow[col - 1] = text;
+
+                            col++;
+
+                            Paragraph paragraph = cell.Elements<Paragraph>().First();
+                            // Run run = paragraph.Elements<Run>().First();
+                            // Text txt = run.Elements<Text>().First();
                         }
 
-                        if (grid.Columns.Count < col)
-                        {
-                            grid.Columns.Add($"{col}");
-                        }
-                        drow[col - 1] = text;
-
-                        col++;
-
-                        Paragraph paragraph = cell.Elements<Paragraph>().First();
-                        // Run run = paragraph.Elements<Run>().First();
-                        // Text txt = run.Elements<Text>().First();
-                        TreeNode treeNode = new TreeNode(text);
-                        attributeNode.Nodes.Add(treeNode);
+                        index++;
+                        grid.Rows.Add(drow);
                     }
-                    groupNode.Nodes.Add(attributeNode);
-                    rootNode.Nodes.Add(groupNode);
-                    index++;
-                    grid.Rows.Add(drow);
                 }
 
-                treeView.Nodes.Add(rootNode);
                 gridView.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
                 gridView.DataSource = grid;
                 foreach(DataGridViewRow dgvrow in gridView.Rows)

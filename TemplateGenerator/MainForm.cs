@@ -175,7 +175,7 @@ namespace TemplateGenerator
                     text = text.Remove(text.LastIndexOf("."), text.Length - text.LastIndexOf("."));
                     text = text.Substring(text.LastIndexOf("\\") + 1, text.Length - text.LastIndexOf("\\") - 1);
 
-                    WordDocument.ImportExportToTreeView(filename, treeView, gridView);
+                    WordDocument.ToGridView(filename, gridView);
                 }
             }
         }
