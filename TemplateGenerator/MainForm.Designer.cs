@@ -50,8 +50,9 @@
             this.treeView.Dock = System.Windows.Forms.DockStyle.Left;
             this.treeView.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.treeView.Location = new System.Drawing.Point(0, 0);
+            this.treeView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.treeView.Name = "treeView";
-            this.treeView.Size = new System.Drawing.Size(396, 386);
+            this.treeView.Size = new System.Drawing.Size(527, 489);
             this.treeView.TabIndex = 0;
             this.treeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.TreeView_MouseClick);
             this.treeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.TreeView_NodeMouseDoubleClick);
@@ -69,7 +70,7 @@
             this.menu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.menu.Location = new System.Drawing.Point(0, 0);
             this.menu.Name = "menu";
-            this.menu.Size = new System.Drawing.Size(800, 60);
+            this.menu.Size = new System.Drawing.Size(1067, 60);
             this.menu.TabIndex = 1;
             this.menu.Text = "toolStrip1";
             // 
@@ -130,7 +131,9 @@
             // 
             this.layout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layout.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.layout.IsSplitterFixed = true;
             this.layout.Location = new System.Drawing.Point(0, 0);
+            this.layout.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.layout.Name = "layout";
             this.layout.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -142,8 +145,9 @@
             // 
             this.layout.Panel2.Controls.Add(this.gridView);
             this.layout.Panel2.Controls.Add(this.treeView);
-            this.layout.Size = new System.Drawing.Size(800, 450);
+            this.layout.Size = new System.Drawing.Size(1067, 554);
             this.layout.SplitterDistance = 60;
+            this.layout.SplitterWidth = 5;
             this.layout.TabIndex = 2;
             // 
             // gridView
@@ -152,17 +156,19 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gridView.Location = new System.Drawing.Point(405, 0);
+            this.gridView.Location = new System.Drawing.Point(540, 0);
+            this.gridView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.gridView.Name = "gridView";
-            this.gridView.Size = new System.Drawing.Size(395, 386);
+            this.gridView.Size = new System.Drawing.Size(527, 489);
             this.gridView.TabIndex = 1;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1067, 554);
             this.Controls.Add(this.layout);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "MainForm";
             this.Text = "Template Generator";
             this.menu.ResumeLayout(false);

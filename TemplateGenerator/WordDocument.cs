@@ -49,12 +49,18 @@ namespace TemplateGenerator
                         string text = $"{cell.InnerText}";
 
                         var properties = cell.TableCellProperties;
+                        var direction = properties.TextDirection;
+                        string textDirection = "[]";
+                        if (direction != null)
+                        {
+                            textDirection = $"[{direction.Val.ToString()}]";
+                        }
                         
                         if (properties.HorizontalMerge != null)
                         {
                             if (properties.HorizontalMerge.Val != null)
                             {
-                                text = $"[HM.{properties.HorizontalMerge.Val.Value}] {text}";
+                                text = $"[HM][{textDirection}] {text}"; // text = $"[HM.{properties.HorizontalMerge.Val.Value}] {text}";
                             }
                         }
 
@@ -62,7 +68,7 @@ namespace TemplateGenerator
                         {
                             if (properties.VerticalMerge.Val != null)
                             {
-                                text = $"[VM.{properties.VerticalMerge.Val.Value}] {text}";
+                                text = $"[VM]{textDirection} {text}"; // text = $"[VM].{properties.VerticalMerge.Val.Value}] {text}";
                             }
                         }
 
@@ -87,8 +93,12 @@ namespace TemplateGenerator
                 }
 
                 treeView.Nodes.Add(rootNode);
-
+                gridView.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
                 gridView.DataSource = grid;
+                foreach(DataGridViewRow dgvrow in gridView.Rows)
+                {
+                    dgvrow.Height = 55;
+                }
 
                 string xfilename = filename;
                 xfilename = xfilename.Remove(xfilename.LastIndexOf("."), xfilename.Length - xfilename.LastIndexOf("."));

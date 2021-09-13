@@ -88,29 +88,96 @@ namespace TemplateGenerator
                 }
                 worksheetPart.Worksheet.InsertAt(lstColumns, 0);
 
-                // string mergeRange = "";
-                // MergeCells mergeCells = new MergeCells(); // Массив объединённых ячеек
+                MergeCells mergeCells = new MergeCells(); // Массив объединённых ячеек
+                List<Cell> cells = new List<Cell>();
                 Cell cell = null;
+
+                bool isHorizontalMergeStarted = false;
+                bool isVerticalMergeStarted = false;
+
+                int verticalMergeColumn = -1;
 
                 uint rowIndex = 1;
                 foreach(object tableRow in table.Rows)
                 {
                     Row row = new Row { RowIndex = rowIndex, Height = 21.25, CustomHeight = true };
                     sheetData.Append(row);
-                    DataRow drow = (DataRow)tableRow;
+                    DataRow dataRow = (DataRow)tableRow;
                     int col = 0;
-                    foreach(object rowCell in drow.ItemArray)
+
+                    foreach (object dataRowCell in dataRow.ItemArray)
                     {
-                        // cell = AddCell(row, 0, (string)rowCell, 1);
-                        cell = AddCell(row, col, rowCell.ToString(), 1);
+                        string text = dataRowCell.ToString();
+                        cell = AddCell(row, col, text, 1);
+
+                        if (col == verticalMergeColumn && isVerticalMergeStarted)
+                        {
+                            cells.Add(cell);
+                        }
+
+                        if (text.Contains("[HM]"))
+                        {
+                            if (!isHorizontalMergeStarted)
+                            {
+                                cells.Add(cell);
+                                isHorizontalMergeStarted = true;
+                            }
+                            else
+                            {
+                                cells.Add(cell);
+                                isHorizontalMergeStarted = false;
+                                mergeCells.Append(new MergeCell() { Reference = new StringValue($"{cells.First().CellReference.Value}:{cells.Last().CellReference.Value}") });
+                                cells.Clear();
+                            }
+                        }
+
+                        if (col == dataRow.ItemArray.Count() && isHorizontalMergeStarted)
+                        {
+                            cells.Add(cell);
+                            isHorizontalMergeStarted = false;
+                            mergeCells.Append(new MergeCell() { Reference = new StringValue($"{cells.First().CellReference.Value}:{cells.Last().CellReference.Value}") });
+                            cells.Clear();
+                        }
+
+                        if (text.Contains("[VM]"))
+                        {
+                            if (!isVerticalMergeStarted)
+                            {
+                                cells.Add(cell);
+                                isVerticalMergeStarted = true;
+                                verticalMergeColumn = col;
+                            }
+                            else
+                            {
+                                cells.Remove(cells.Last());
+                                verticalMergeColumn = -1;
+                                isVerticalMergeStarted = false;
+                                mergeCells.Append(new MergeCell() { Reference = new StringValue($"{cells.First().CellReference.Value}:{cells.Last().CellReference.Value}") });
+                                cells.Clear();
+
+                                cells.Add(cell);
+                                isVerticalMergeStarted = true;
+                                verticalMergeColumn = col;
+                            }
+                        }
+
+                        if (rowIndex == table.Rows.Count && isVerticalMergeStarted)
+                        {
+                            verticalMergeColumn = -1;
+                            isVerticalMergeStarted = false;
+                            mergeCells.Append(new MergeCell() { Reference = new StringValue($"{cells.First().CellReference.Value}:{cells.Last().CellReference.Value}") });
+                            cells.Clear();
+                        }
+
                         col++;
                     }
-                    
+
                     rowIndex++;
                 }
 
-                // worksheetPart.Worksheet.InsertAfter(mergeCells, worksheetPart.Worksheet.Elements<SheetData>().First()); // Добавляем к документу список объединённых ячеек
-                // worksheetPart.Worksheet.Save();
+                worksheetPart.Worksheet.InsertAfter(mergeCells, worksheetPart.Worksheet.Elements<SheetData>().First()); // Добавляем к документу список объединённых ячеек
+                worksheetPart.Worksheet.Save();
+
                 workbookpart.Workbook.Save();
                 document.Close();
             }
